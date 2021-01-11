@@ -27,7 +27,7 @@ public class LoginController {
 		if (userID == null) {
 			return "Enter value for userid param ";
 		}
-		System.out.println("Login Succes");
+		//System.out.println("Login Succes");
 		return logindao.getLoginDetails(userID,password);
 	}
 }
