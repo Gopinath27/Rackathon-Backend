@@ -10,6 +10,7 @@ import com.rackathon.dao.LoginDao;
 //import com.rackathon.vo.LoginEntity;
 //import com.rackathon.vo.LoginRepository;
 
+@CrossOrigin(origins= {"http://localhost:3000"} )
 @RestController
 public class LoginController {
 	
