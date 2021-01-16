@@ -13,6 +13,7 @@
 	<groupId>com.rackathon.backend</groupId>
 	<artifactId>ProductRecall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>ProductRecall</name>
 	<description>App for Recalling Product</description>
 
