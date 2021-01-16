@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "webAppName": {
-            "type": "string"
+            "type": "string",
             "defaultValue": "ProductRecallRest"
         },
         "hostingPlanName": {
