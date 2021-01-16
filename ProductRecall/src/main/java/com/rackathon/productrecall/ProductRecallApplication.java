@@ -16,9 +16,9 @@ public class ProductRecallApplication {
 
 @RestController
 class Login{
-	@GetMapping("/log")
+	@GetMapping("/")
 	public String log() {
-		return "";
+		return "Welcome to ProductRecall REST API";
 	}
 }
 }
