@@ -4,7 +4,7 @@
     "parameters": {
         "webAppName": {
             "type": "string"
-            "value": "ProductRecallRest"
+            "defaultValue": "ProductRecallRest"
         },
         "hostingPlanName": {
             "type": "string"
