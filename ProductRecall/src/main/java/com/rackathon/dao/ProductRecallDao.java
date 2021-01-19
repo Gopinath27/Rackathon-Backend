@@ -1,6 +1,7 @@
 package com.rackathon.dao;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import org.springframework.util.StringUtils;
 
 public class ProductRecallDao {
 	
@@ -68,18 +71,41 @@ public class ProductRecallDao {
 		return responseList;
 	}
 	
-	public List productRecall() {
+	public List productRecall(int storeID,int productID, List<Integer> mfgList) {
 
 		Connection connection;
 
 		List responseList = new ArrayList<>();
 		try {
-			//Recall Functionality to be added..!
-			
-			
 			connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 			log.info("Database connection test: " + connection.getCatalog());
+			
+			//Update Product Table
+			int quantity = mfgList.size();
+			log.info("Quantity :"+quantity);
+			PreparedStatement updateStatement = connection
+					.prepareStatement("Update productcatalogue SET Quantity= Quantity -"+quantity+" where StoreID ="+storeID+" AND ProductID ="+productID);
+			updateStatement.executeUpdate();
 
+			
+			//Insert Details into Issue Table
+			
+			for(int mfgcode : mfgList){
+				PreparedStatement insertStatement = connection
+						.prepareStatement("insert into issuecatalogue values ("+storeID+","+productID+","+mfgcode+")");
+				
+				insertStatement.executeUpdate();
+			}
+			
+			//Delete Details from prod_mgf_catalogue
+			
+			String strmfgList = StringUtils.collectionToCommaDelimitedString(mfgList);
+			log.info("List as String :: "+strmfgList);
+			PreparedStatement deleteStatement = connection
+					.prepareStatement("delete from prod_mfg_catalogue where mfgcode IN ("+strmfgList+")");
+			deleteStatement.executeUpdate();
+			
+			//Issue Table Display
 			PreparedStatement readStatement = connection
 					.prepareStatement("SELECT * FROM issuecatalogue ;");
 			ResultSet resultSet = readStatement.executeQuery();
