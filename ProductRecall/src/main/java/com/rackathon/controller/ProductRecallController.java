@@ -12,10 +12,10 @@ import com.rackathon.dao.ProductRecallDao;
 public class ProductRecallController {
 
 	@RequestMapping(value="/productRecall")
-	public List productRecall() {
+	public List productRecall(@RequestParam(name = "storeid") int storeID, @RequestParam(name = "productid") int productID, @RequestParam(name = "listmfg") List<Integer> mfgList) {
 		
 		ProductRecallDao productRecallDao = new ProductRecallDao();
-		return productRecallDao.productRecall();
+		return productRecallDao.productRecall(storeID, productID, mfgList);
 		
 	}
 	
