@@ -3,6 +3,7 @@ package com.rackathon.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.rackathon.dao.ProductDetailDao;
 
+@CrossOrigin(origins= {"http://localhost:3000","https://productrecall.azurewebsites.net","http://productrecall.azurewebsites.net"} )
 @RestController
 public class ProductDetailController {
+	
+	
 	
 	public ProductDetailController() {
 		// TODO Auto-generated constructor stub
@@ -36,7 +40,6 @@ public class ProductDetailController {
 	 * 
 	 * }
 	 */
-	
 	@GetMapping(value="/fetchproduct")
 	public List fetchProduct(@RequestParam(name = "storeid",required = false) Integer storeid, @RequestParam(name = "productid",required = false) Integer productid) {
 		// Fetch all products based on Store ID
@@ -57,5 +60,7 @@ public class ProductDetailController {
 			throw new ResponseStatusException(
 					  HttpStatus.NOT_FOUND, "Enter either storeid or productid");
 		}
+
+		
 	}	
 }
