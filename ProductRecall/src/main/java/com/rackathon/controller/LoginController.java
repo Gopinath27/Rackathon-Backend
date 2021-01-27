@@ -11,7 +11,7 @@ import com.rackathon.dao.LoginDao;
 //import com.rackathon.vo.LoginEntity;
 //import com.rackathon.vo.LoginRepository;
 
-@CrossOrigin(origins= {"http://localhost:3000"} )
+@CrossOrigin(origins= {"http://localhost:3000","https://productrecall.azurewebsites.net","http://productrecall.azurewebsites.net"} )
 @RestController
 public class LoginController {
 	
@@ -27,7 +27,8 @@ public class LoginController {
 		if (userID == null) {
 			return "Enter value for userid param ";
 		}
-		//System.out.println("Login Succes");
+		System.out.println("Login Succes");
 		return logindao.getLoginDetails(userID,password);
+		
 	}
 }
