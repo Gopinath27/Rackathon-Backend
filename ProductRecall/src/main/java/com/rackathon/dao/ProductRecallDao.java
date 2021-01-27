@@ -24,8 +24,11 @@ public class ProductRecallDao {
 	public ProductRecallDao() {
 		// TODO Auto-generated constructor stub
 		try {
-			properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
-		} catch (IOException e) {
+			//properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
+			properties.setProperty("url", System.getProperty("url"));
+			properties.setProperty("user", System.getProperty("user"));
+			properties.setProperty("password", System.getProperty("password"));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -41,7 +44,7 @@ public class ProductRecallDao {
 			log.info("Database connection test: " + connection.getCatalog());
 
 			PreparedStatement readStatement = connection
-					.prepareStatement("SELECT * FROM prod_mfg_catalogue WHERE StoreID = \"" + storeID + "\""+ "AND ProductID = \""+productID+"\";");
+					.prepareStatement("SELECT * FROM productcatalogue WHERE StoreID = \"" + storeID + "\""+ "AND ProductID = \""+productID+"\";");
 			ResultSet resultSet = readStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -71,7 +74,7 @@ public class ProductRecallDao {
 		return responseList;
 	}
 	
-	public List productRecall(int storeID,int productID, List<Integer> mfgList) {
+	public Boolean productRecall(int storeID,int productID, List<String> batchList) {
 
 		Connection connection;
 
@@ -81,31 +84,32 @@ public class ProductRecallDao {
 			log.info("Database connection test: " + connection.getCatalog());
 			
 			//Update Product Table
-			int quantity = mfgList.size();
+			/*int quantity = mfgList.size();
 			log.info("Quantity :"+quantity);
 			PreparedStatement updateStatement = connection
 					.prepareStatement("Update productcatalogue SET Quantity= Quantity -"+quantity+" where StoreID ="+storeID+" AND ProductID ="+productID);
-			updateStatement.executeUpdate();
+			updateStatement.executeUpdate();*/
 
 			
 			//Insert Details into Issue Table
 			
-			for(int mfgcode : mfgList){
+			for(String batchNumber : batchList){
 				PreparedStatement insertStatement = connection
-						.prepareStatement("insert into issuecatalogue values ("+storeID+","+productID+","+mfgcode+")");
+						.prepareStatement("insert into issuecatalogue values ("+storeID+","+productID+",\""+batchNumber+"\")");
 				
 				insertStatement.executeUpdate();
 			}
 			
-			//Delete Details from prod_mgf_catalogue
+			//Delete Details from prodcatalogue
 			
-			String strmfgList = StringUtils.collectionToCommaDelimitedString(mfgList);
-			log.info("List as String :: "+strmfgList);
+			//String strbatchList = StringUtils.collectionToCommaDelimitedString(batchList);
+			String strbatchList = StringUtils.collectionToDelimitedString(batchList, ",", "\"", "\"");
+			log.info("List as String :: "+strbatchList);
 			PreparedStatement deleteStatement = connection
-					.prepareStatement("delete from prod_mfg_catalogue where mfgcode IN ("+strmfgList+")");
+					.prepareStatement("delete from productcatalogue where StoreID ="+storeID+" AND ProductID ="+productID+" AND BatchNumber IN ("+strbatchList+")");
 			deleteStatement.executeUpdate();
 			
-			//Issue Table Display
+/*			//Issue Table Display
 			PreparedStatement readStatement = connection
 					.prepareStatement("SELECT * FROM issuecatalogue ;");
 			ResultSet resultSet = readStatement.executeQuery();
@@ -124,17 +128,20 @@ public class ProductRecallDao {
 				// response = convertToJSON(resultSet);
 			}
 			log.info("Inside Try :: " + responseList.toString());
-
+*/
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		// log.info("Outside Try :: "+response.toString());
 		// return response;
 
-		return responseList;
+		//return responseList;
+			return true;
 	}
 
 }
