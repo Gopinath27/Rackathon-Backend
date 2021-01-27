@@ -18,8 +18,11 @@ public class LoginDao {
 
 	public LoginDao() {
 		try {
-			properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
-		} catch (IOException e) {
+			//properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
+			properties.setProperty("url", System.getProperty("url"));
+			properties.setProperty("user", System.getProperty("user"));
+			properties.setProperty("password", System.getProperty("password"));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -29,6 +32,8 @@ public class LoginDao {
 		Connection connection;
 		String response = "Error Occured";
 		try {
+			System.out.println("");
+			//properties
 			connection = DriverManager.getConnection(properties.getProperty("url"),properties);
 			log.info("Database connection test: " + connection.getCatalog());
 			
