@@ -21,8 +21,11 @@ public class ProductReturnDao {
 	public ProductReturnDao() {
 		// TODO Auto-generated constructor stub
 		try {
-			properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
-		} catch (IOException e) {
+			//properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
+			properties.setProperty("url", System.getProperty("url"));
+			properties.setProperty("user", System.getProperty("user"));
+			properties.setProperty("password", System.getProperty("password"));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
