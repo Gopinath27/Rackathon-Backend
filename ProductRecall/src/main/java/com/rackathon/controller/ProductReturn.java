@@ -12,7 +12,7 @@ import com.rackathon.dao.ProductReturnDao;
 
 @CrossOrigin(origins= {"http://localhost:3000","https://productrecall.azurewebsites.net","http://productrecall.azurewebsites.net"} )
 @RestController
-public class ProductReturnController {
+public class ProductReturn {
 	
 	@GetMapping(value="/fetchissueproduct")
 	public List fetchIssueProduct(@RequestParam(name = "productid") int productID) {
