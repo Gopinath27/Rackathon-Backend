@@ -25,8 +25,11 @@ public class ProductDetailDao {
 	public ProductDetailDao() {
 		// TODO Auto-generated constructor stub
 		try {
-			properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
-		} catch (IOException e) {
+			//properties.load(LoginDao.class.getClassLoader().getResourceAsStream("application.properties"));
+			properties.setProperty("url", System.getProperty("url"));
+			properties.setProperty("user", System.getProperty("user"));
+			properties.setProperty("password", System.getProperty("password"));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -42,7 +45,7 @@ public class ProductDetailDao {
 			log.info("Database connection test: " + connection.getCatalog());
 
 			PreparedStatement readStatement = connection
-					.prepareStatement("SELECT * FROM productcatalogue WHERE StoreID = \"" + storeID + "\";");
+					.prepareStatement("SELECT StoreID,ProductID,ProductName,sum(Quantity) AS Quantity FROM productcatalogue WHERE StoreID = \"" + storeID + "\"group by StoreID,ProductID;");
 			ResultSet resultSet = readStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -83,7 +86,7 @@ public class ProductDetailDao {
 			log.info("Database connection test: " + connection.getCatalog());
 
 			PreparedStatement readStatement = connection
-					.prepareStatement("SELECT * FROM productcatalogue WHERE ProductID = \"" + productID + "\";");
+					.prepareStatement("SELECT StoreID,ProductID,ProductName,sum(Quantity) AS Quantity FROM productcatalogue WHERE ProductID = \"" + productID + "\"group by StoreID,ProductID;");
 			ResultSet resultSet = readStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -123,7 +126,7 @@ public class ProductDetailDao {
 			log.info("Database connection test: " + connection.getCatalog());
 
 			PreparedStatement readStatement = connection
-					.prepareStatement("SELECT * FROM productcatalogue WHERE StoreID = \"" + storeID + "\""+ "AND ProductID = \""+productID+"\";");
+					.prepareStatement("SELECT StoreID,ProductID,ProductName,sum(Quantity) AS Quantity FROM productcatalogue WHERE StoreID = \"" + storeID + "\""+ "AND ProductID = \""+productID+"\" group by StoreID,ProductID ;");
 			ResultSet resultSet = readStatement.executeQuery();
 
 			while (resultSet.next()) {
